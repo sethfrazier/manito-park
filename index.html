@@ -2,54 +2,347 @@
 <html class="no-js" lang="">
 
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit-no">
-
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Manito Park Visitor Map</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" crossorigin=""/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
     
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    
+    <!-- stylesheet links-->
+    
+    <!-- Leaflet Stylesheets-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+    
+    <!-- LEAFLET SIDEBAR STYLESHEET -->
+    <link rel="stylesheet" href="lib/leaflet-sidebar-v2/css/leaflet-sidebar.css"/>
+    
+    <!-- Leaflet draw Stylesheets-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+    
+    <!--custom stylesheet-->
     <link rel="stylesheet" href="css/style.css">
+    
+    <!--font awsome icons-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    
+    <!-- Leaflet markers-->
+    <link  rel="stylesheet" href="lib/Leaflet.awesome-markers-2.0-develop/dist/leaflet.awesome-markers.css">
+    
+    <!--Google fonts-->
+    <!--HEREEEEEEEEEEEEEEEEEEE-->
+    
+    <!-- boilerplate stylesheets--> 
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
     
-  
+    <meta name="theme-color" content="#fafafa">
     
- 
-
-  <meta name="theme-color" content="#fafafa">
 </head>
 
 <body>
-  <!--[if IE]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-  <![endif]-->
+    <!--[if IE]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
 
-  <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
-  <div id = "mapid"></div>
-  <script src="js/vendor/modernizr-3.7.1.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <!-- Add your site or application content here -->
+    <div id = "mapid" class ="sidebar-map"></div>
+    
+    <!-- sidebar-->
+     <div id="sidebar" class="sidebar collapsed">
+          <!-- Nav tabs -->
+          <div class="sidebar-tabs">
+              <ul class ="tablist"> <!--role instead of class?-->
+                  <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                  <li><a href="#searchTab" role="tab"><i class="fa fa-search"></i></a></li>
+                  <li><a href="#submitTab" role="tab"><i class="fa fa-map-marker-alt"></i></a></li>
+                  <li><a href="#legendTab" role="tab"><i class="fa fa-list"></i></a></li>
+              </ul>
+
+            <ul role="tablist">
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </div>
+         
+         <!-- Tab panes -->
+         <div class="sidebar-content">
+             <div class="sidebar-pane" id="home">
+                 <h1 class="leaflet-sidebar-header">J.N. "Ding" Darling National Wildlife Refuge
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                 
+                <p>This interactive visitor map shows the roads, trails, parking lots, and points of interest within J.N. "Ding" Darling National Wildlife Refuge in Sanibel, Florida. If you are in the park, your current location will be marked with a blue arrow.</p>
+                 
+                <p>The refuge is known as <a href="https://www.youtube.com/watch?v=hzEfZyU7sNs" target="_blank">"America's Birding Hotspot"</a> and is also home to iconic Florida <a href="https://www.dingdarlingsociety.org/animals/sightings?page=1&filter=all" target="_blank">wildlife</a>, including the Florida manatee, bottlenose dolphin, and American alligator. Use this map to view birding hotspots from eBird, view recent wildlife sightings, and submit your own observations.</p>
+                 
+                <div align="center">
+                    <a href="https://www.fws.gov/refuge/jn_ding_darling/" target="_blank"><img src="" width="50%"></a><!--logo here-->
+                </div>
+                 
+            </div>
+             
+            <div class="leaflet-sidebar-pane" id="searchTab">
+                <h1 class="leaflet-sidebar-header">Filter Points of Interest
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <p>Filter points of interest by theme or location</p>
+
+                <!-- Build UI control-->
+                <div id='ui-controls'>
+
+                    <div id="fieldLabel"><label id="filterLabel">Theme:</label></div>
+                    <select id="filterDropdown">
+                        <option value="all">All Points of Interest</option>
+                        <option value="visitorCenters">Visitor Centers</option>
+                        <option value="drivingTour">Driving</option>
+                        <option value="hiking">Hiking</option>
+                        <option value="fishingBoating">Fishing and Boating</option>
+                        <option value="picnicking">Picnicking</option>
+                        <option value="beaches">Beaches</option>
+                        <option value="insideTheRefuge">Inside the Refuge</option>
+                        <!-- Another option will be added dynamically if the user's current location is within the map bounds -->
+                    </select>
+                </div>
+            </div>
+             
+            <div class="leaflet-sidebar-pane" id="submitTab">
+                <h1 class="leaflet-sidebar-header">Submit Wildlife Observations
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <p>Submit your own wildlife observations</p>
+
+                <!-- Build UI control-->
+                <div id='ui-controls'>
+
+                    <input id="currentLocationButton" type="button" src="js/main.js" onclick="addPointAtCurrentLocation();" value="Use Current Location">
+                    <input id="clickPointButton" type="button" src="js/main.js" onclick="startEdits();" value="Click a Point"><br>
+
+                    <div id="fieldLabel"><label>Latitude:</label></div>
+                    <input type="text" id="latitude" disabled>
+
+                    <div id="fieldLabel"><label>Longitude:</label></div>
+                    <input type="text" id="longitude" disabled>
+
+                    <div id="fieldLabel"><label>Species Family:</label></div>
+                    <select id="speciesFamilyDropdown">
+                        <option value="default"></option>
+                        <option value="birds">Birds</option>
+                        <option value="mammals">Mammals</option>
+                        <option value="reptiles">Reptiles</option>
+                        <option value="amphibians">Amphibians</option>
+                        <option value="insectsArachnids">Insects and Arachnids</option>
+                        <option value="crustaceans">Crustaceans</option>
+                    </select>
+
+                    <div id="fieldLabel"><label>Species:</label></div>
+                    <select id="speciesDropdown">
+                    </select>
+
+                    <br><br>
+                    <input id="submitButton" type="submit" value="Submit" onclick="setData();" disabled>
+                    <input id="resetButton" type="submit" value="Reset" onclick="cancelData();">
+                </div>
+            </div>
+             
+             <div class="leaflet-sidebar-pane" id="legendTab">
+                <h1 class="leaflet-sidebar-header">Legend
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+
+                <div id='ui-controls'>
+                    <div id="fieldLabel">Points of Interest</div>
+
+                    <div id="legendItem">
+                        <img src="icons/4_driving_tour.png" alt="Driving Tour" width="20px">
+                        <span class="legendText">Driving Tour Entrance and Exit</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/5_fishing.png" alt="Fishing" width="20px">
+                        <span class="legendText">Fishing Area</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/6_fishing_pier.png" alt="Fishing Pier" width="20px">
+                        <span class="legendText">Fishing Pier</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/8_hand_launch_small_boat_launch.png" alt="Hand Launch / Small Boat Launch" width="20px">
+                        <span class="legendText">Hand Launch / Small Boat Launch</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/11_information.png" alt="Visitor Center / Information" width="20px">
+                        <span class="legendText">Visitor Center / Information</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/12_interpretive_sign.png" alt="Interpretive Sign" width="20px">
+                        <span class="legendText">Interpretive Sign</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/14_scenic_viewpoint.png" alt="Scenic Viewpoint" width="20px">
+                        <span class="legendText">Scenic Viewpoint</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/15_observation_deck.png" alt="Observation Deck" width="20px">
+                        <span class="legendText">Observation Deck</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/16_parking.png" alt="Parking" width="20px">
+                        <span class="legendText">Parking</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/17_picnic_area.png" alt="Picnic Area" width="20px">
+                        <span class="legendText">Picnic Area</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/18_restroom.png" alt="Restroom" width="20px">
+                        <span class="legendText">Restroom</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/19_pavilion.png" alt="Pavilion" width="20px">
+                        <span class="legendText">Pavilion</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/20_trailhead.png" alt="Trailhead" width="20px">
+                        <span class="legendText">Trailhead</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/23_lighthouse.png" alt="Lighthouse" width="20px">
+                        <span class="legendText">Lighthouse</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/35_beach_access.png" alt="Beach" width="20px">
+                        <span class="legendText">Beach</span>
+                    </div>
+
+                    <div id="fieldLabel">eBird Hotspots</div>
+                    <div id="legendItem">
+                        <img src="icons/ebird_hotspots.png" alt="eBird Hotspots">
+                        <span class="legendText"></span>
+                    </div>
+                    
+                    <div id="fieldLabel">Wildlife Observations</div>
+                    <div id="legendItem">
+                        <img src="icons/birds.png" alt="Birds">
+                        <span class="legendText">Birds</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/mammals.png" alt="Mammals">
+                        <span class="legendText">Mammals</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/reptiles.png" alt="Reptiles">
+                        <span class="legendText">Reptiles</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/amphibians.png" alt="Amphibians">
+                        <span class="legendText">Amphibians</span>
+                    </div>
+
+                    <div id="legendItem">
+                        <img src="icons/insects_arachnids.png" alt="Insects and Arachnids">
+                        <span class="legendText">Insects and Arachnids</span>
+                    </div>  
+
+                    <div id="legendItem">
+                        <img src="icons/crustaceans.png" alt="Crustaceans">
+                        <span class="legendText">Crustaceans</span>
+                    </div>                    
+                </div>
+
+            </div>
+             
+             <div class="sidebar-pane" id="settings">
+                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+            </div>
+
+        </div>
+    </div>
+                 
+    
+    
+    <!--JS imports-->
+    <script src="js/vendor/modernizr-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+    
+    <!-- Leaflet JS Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    
+    <!--Leaflet Draw JS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    
+    <!-- Leaflet sidebar v2 sidebar-->
+    <script src="lib/leaflet-sidebar-v2/js/leaflet-sidebar.js"></script>
+    
+    <!-- Leaflet awesome markers 2-->
+    <scrip src="lib/Leaflet.awesome-markers-2.0-develop/dist/leaflet.awesome-markers.js"></scrip>
+    
+    <!-- Carto js-->
     <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
-  <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script>
+    
+    <!-- Full JQuery-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    
+    <!--Default js-->
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
      
 
-  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-  <script>
-    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
-    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
-  </script>
-  <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+    <script>
+        window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+        ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+    </script>
+    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 </body>
 
 </html>
+
+
+
+<!------------------------------------------------------------------------------------------------->
+
+
+    
+
+    
+    
+    <!-- JQUERY UI STYLESHEET -->
+    <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
+
+
+
+
+    <!-- ****************************************************************************************** -->
+    <!-- Links to JavaScript Libraries -->
+    <!-- ****************************************************************************************** -->
+
+
+    
+    <!-- LEAFLET MULTI STYLE LAYER -->
+    <!--<script src="lib/leaflet-multi-style-master/multi-style-layer.js"></script>-->
+
+    <!-- JQUERY UI -->
+    <!--<script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>-->
+
