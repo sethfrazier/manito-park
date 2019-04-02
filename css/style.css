@@ -1,6 +1,6 @@
 
 /*Map fill whole screen*/
-#map { 
+#mapid { 
     
     display: inline-block;
     height: 100vh;
