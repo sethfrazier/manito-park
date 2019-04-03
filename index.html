@@ -48,30 +48,29 @@
     <!--[if IE]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
+    
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 
     <!-- Add your site or application content here -->
     <div id = "mapid" class ="sidebar-map"></div>
     
     <!-- sidebar-->
-     <div id="sidebar" class="sidebar collapsed">
+     <div id="sidebar" class="leaflet-sidebar collapsed">
           <!-- Nav tabs -->
-          <div class="sidebar-tabs">
-              <ul class ="tablist"> <!--role instead of class?-->
+          <div class="leaflet-sidebar-tabs">
+              <ul class ="leaflet-tablist"> <!--role instead of class?-->
                   <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
                   <li><a href="#searchTab" role="tab"><i class="fa fa-search"></i></a></li>
                   <li><a href="#submitTab" role="tab"><i class="fa fa-map-marker-alt"></i></a></li>
                   <li><a href="#legendTab" role="tab"><i class="fa fa-list"></i></a></li>
               </ul>
-
-            <ul role="tablist">
-                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-            </ul>
         </div>
          
          <!-- Tab panes -->
-         <div class="sidebar-content">
-             <div class="sidebar-pane" id="home">
-                 <h1 class="leaflet-sidebar-header">J.N. "Ding" Darling National Wildlife Refuge
+         <div class="leaflet-sidebar-content">
+             
+             <div class="leaflet-sidebar-pane" id="home">
+                 <h1 class="leaflet-sidebar-header">Manito Park
                     <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
                  
@@ -270,10 +269,6 @@
                 </div>
 
             </div>
-             
-             <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-            </div>
 
         </div>
     </div>
@@ -284,7 +279,7 @@
     <script src="js/vendor/modernizr-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+    
     
     <!-- Leaflet JS Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>

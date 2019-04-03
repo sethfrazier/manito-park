@@ -6,3 +6,8 @@
     height: 100vh;
     width: 100vw;
 }
+
+/* CSS For Leaflet*/
+.leaflet-sidebar.leaflet.touch{
+    height: 75%
+}
