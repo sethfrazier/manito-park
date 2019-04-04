@@ -7,6 +7,9 @@ var refugeBoundary,
     roads,
     trailFeatures;
 
+//Initilize global variables for feature groups
+var trailFeaturesLayerGroup = L.featureGroup()
+
 //function createMap(){
     //create the map with map options
     var myMap = L.map('mapid',{
@@ -16,9 +19,31 @@ var refugeBoundary,
         minZoom: 6, 
 });
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+var wikomidia=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
             maxZoom: 18
         }).addTo(myMap);
+
+var Esri_WorldImagery = L.tileLayer('https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '<a href="http://www.arcgis.com/home/item.html?id=da10cf4ba254469caf8016cd66369157">Esri</a>',
+    maxNativeZoom: 18,
+    maxZoom: 19
+});
+
+//setup layer control box
+    //baseMaps
+    var baseMaps = {
+        "Streets": wikomidia,
+        "Grayscale": Esri_WorldImagery
+    };
+    
+    //overlayMaps
+    var overlayMaps = {
+        "Trails": trailFeaturesLayerGroup,
+        //"County Boundary": county,
+};
+
+//Load layercontrol
+L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
 //move zoomcontrol to topright
 myMap.zoomControl.setPosition('topleft');
@@ -30,14 +55,24 @@ var sidebar = L.control.sidebar({
     position: 'left',
 }).addTo(myMap);
 
+//Run the load data functions when the document loads
+$(document).ready(function(){
+    //load all carto data
+    loadParkBoundary();
+    loadRoads();
+    loadParkFeatures();
+    loadTrails();
+    
+})
+
 /*
 L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
     attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
     minZoom: 1,
 maxZoom: 19}).addTo(myMap);*/
 
-// Function to load the refuge boundary onto the map
-function loadRefugeBoundary() {
+// Function to load the park boundary onto the map
+function loadParkBoundary() {
 
     // If the layer is already shown on the map, remove it
     if (myMap.hasLayer(refugeBoundary)) {
@@ -50,7 +85,7 @@ function loadRefugeBoundary() {
     $.getJSON("https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM manitoboundary", function (data) {
               
               // Convert the JSON to a Leaflet GeoJson
-              refugeBoundary = L.geoJson(data, {
+              parkBoundary = L.geoJson(data, {
 
 
             // Create an initial style for each feature
@@ -67,12 +102,12 @@ function loadRefugeBoundary() {
         }).addTo(myMap);
 
         // Bring the layer to the back of the layer order
-        refugeBoundary.bringToBack();
+        parkBoundary.bringToBack();
     });
 }
 
 
-// Function to load the refuge roads onto the map
+// Function to load the park roads onto the map
 function loadRoads() {
 
     // If the layer is already shown on the map, remove it
@@ -108,7 +143,7 @@ function loadRoads() {
 
             }
 
-        }).addTo(myMap);
+        }).addTo(trailFeaturesLayerGroup);
 
         // Bring the layer to the back of the layer order
         //roads.bringToBack();
@@ -116,8 +151,8 @@ function loadRoads() {
 
 }
 
-// Function to load the refuge trail features onto the map
-//function loadTrailFeatures() {
+// Function to load the park features onto the map
+function loadParkFeatures() {
 
     // If the layer is already shown on the map, remove it
     if (myMap.hasLayer(trailFeatures)) {
@@ -130,7 +165,7 @@ function loadRoads() {
     $.getJSON('https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q=SELECT* FROM manitofeatures', function (data) {
 
         // Convert the JSON to a Leaflet GeoJson
-        trailFeatures = L.geoJson(data, {
+        parkFeatures = L.geoJson(data, {
 
             // Create a style for the points
             pointToLayer: function (feature, latlng) {
@@ -159,10 +194,10 @@ function loadRoads() {
         //map.removeLayer(trailFeaturesLayerGroup);
     });
 
-//}
+}
 
 
-// Function to load the refuge roads onto the map
+// Function to load the park trails onto the map
 function loadTrails() {
 
     // If the layer is already shown on the map, remove it
@@ -203,38 +238,126 @@ function loadTrails() {
         // Bring the layer to the back of the layer order
         //roads.bringToBack();
     });
-
 }
 
-loadRefugeBoundary();
-loadRoads();
-loadTrails();
-/*
+//INSERT INTO user_input (userinit, userreport, comments, the_geom) VALUES ('this is a string', '11', 'ggg' ST_SetSRID(ST_Point(-112, 47),4326))
+
+
 drawnItems = new L.FeatureGroup();
-        drawControl = new L.Control.Draw({
-        draw: {
-                polygon: false,
-                polyline: false,
-                line: false,
-                marker: true,
-                rectangle: false,
-                circle: false,
-                circlemarker: false,
-            },
-            edit: {
-                featureGroup: drawnItems,
-                edit: false,
-                remove: false
-            },
-            draw: {
-                polygon: {
-                    allowIntersection: false,
-                    showArea: true
-                }
-            }
-        });
+drawControl = new L.Control.Draw({
+draw: {
+    polygon: false,
+    polyline: false,
+    line: false,
+    marker: true,
+    rectangle: false,
+    circle: false,
+    circlemarker: false,
+},
+    edit: {
+        featureGroup: drawnItems,
+        edit: false,
+        remove: false
+},
+    draw: {
+        polygon: {
+        allowIntersection: false,
+        showArea: true
+        }
+    },
+    position: 'topleft'
+});
 
  
 
 myMap.addControl(drawControl);
-myMap.addLayer(drawnItems);*/
+myMap.addLayer(drawnItems);
+
+// define client
+          // We have created a empty dataset with private privacy
+          // and we give it insert permission for SQL and select permission for maps
+          // So we can display the geometries added on the map when we refresh
+        const client = new carto.Client({
+            apiKey: '1179d714b3b146401c9e7d6618ba1d043e644f4f',
+            username: 'sfrazier'
+        });
+        source = new carto.source.SQL(`
+            SELECT * FROM user_input
+        `);
+        
+       /* cartoCSS = new carto.style.CartoCSS(`
+            #layer {
+                // Create a style for the points
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    fillColor: 'blue',
+                    fillOpacity: 1,
+                    color: '#ffffff',
+                    weight: 0.25,
+                    opacity: 1,
+                    radius: 2.5
+            }`
+        );*/
+
+         // For the data source, enter the URL that goes to the SQL API, including our username and the SQL query
+    $.getJSON('https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q=SELECT* FROM manitofeatures', function (data) {
+
+        // Convert the JSON to a Leaflet GeoJson
+        parkFeatures = L.geoJson(data, {
+
+            // Create a style for the points
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    fillColor: '#5d0000',
+                    fillOpacity: 1,
+                    color: '#ffffff',
+                    weight: 0.25,
+                    opacity: 1,
+                    radius: 2.5
+                });
+            },
+        
+        }).addTo(myMap)
+        
+        //cartoLayer = new carto.layer.Layer(source, cartoCSS);
+
+        //client.addLayer(cartoLayer);
+
+        //client.getLeafletLayer().addTo(myMap);
+    
+// Create Leaflet Draw Control for the draw tools and toolbox
+var drawControl = new L.Control.Draw({
+
+    // Disable drawing of polygons, polylines, rectangles, and circles
+    // Users will only be able to draw markers (points)
+    draw: {
+        polygon: false,
+        polyline: false,
+        rectangle: false,
+        circle: false,
+        circlemarker: false,
+    },
+
+    // Disable editing and deleting points
+    edit: false,
+    remove: false,
+    position: 'topleft'
+});
+
+myMap.addControl(drawControl);
+
+
+//"https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO test_table (column_name, column_name_2, the_geom) VALUES ('this is a string', 11, ST_SetSRID(ST_Point(-110, 43),4326))&api_key={api_key}"
+
+    myMap.on(L.Draw.Event.CREATED, function (e) {
+            let layer = e.layer;
+            myMap.addLayer(layer);
+            let layerAdded = JSON.stringify(layer.toGeoJSON().geometry)
+            
+            // use Fetch API to send request
+            fetch("https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO user_input(the_geom, userinit, userreport, comments) VALUES(st_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326),cff, test2, pwew)&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f"),
+            //method: 'get',mode: 'no-cors'
+            //).then(function(response){
+                console.log(response)
+            })
+    });
