@@ -58,11 +58,11 @@ var sidebar = L.control.sidebar({
 //Run the load data functions when the document loads
 $(document).ready(function(){
     //load all carto data
-    loadParkBoundary();
+    //loadParkBoundary();
     loadRoads();
     loadParkFeatures();
     loadTrails();
-    
+    //loadUserInput();
 })
 
 /*
@@ -240,6 +240,51 @@ function loadTrails() {
     });
 }
 
+// Function to load the park features onto the map
+function loadUserInput() {
+
+    // If the layer is already shown on the map, remove it
+    if (myMap.hasLayer(trailFeatures)) {
+        myMap.removeLayer(trailFeatures);
+    }
+
+    // Run the specified sqlQuery from CARTO, return it as a JSON, convert it to a Leaflet GeoJson, and add it to the map with a popup
+
+    // For the data source, enter the URL that goes to the SQL API, including our username and the SQL query
+    $.getJSON('https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q=SELECT* FROM user_input', function (data) {
+
+        // Convert the JSON to a Leaflet GeoJson
+        parkFeatures = L.geoJson(data, {
+
+            // Create a style for the points
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    fillColor: 'pink',
+                    fillOpacity: 1,
+                    color: '#ffffff',
+                    weight: 0.25,
+                    opacity: 1,
+                    radius: 2.5
+                });
+            },
+
+            // Loop through each feature
+            onEachFeature: function (feature, layer) {
+
+                // Bind the name to a popup
+                layer.bindPopup(feature.properties.feature_type);
+
+            }
+        }).addTo(myMap)
+
+        //}).addTo(trailFeaturesLayerGroup);
+
+        // Turn the layer off by default
+        //map.removeLayer(trailFeaturesLayerGroup);
+    });
+
+}
+
 //INSERT INTO user_input (userinit, userreport, comments, the_geom) VALUES ('this is a string', '11', 'ggg' ST_SetSRID(ST_Point(-112, 47),4326))
 
 
@@ -252,19 +297,13 @@ draw: {
     marker: true,
     rectangle: false,
     circle: false,
-    circlemarker: false,
+    circlemarker: false
 },
     edit: {
         featureGroup: drawnItems,
         edit: false,
         remove: false
 },
-    draw: {
-        polygon: {
-        allowIntersection: false,
-        showArea: true
-        }
-    },
     position: 'topleft'
 });
 
@@ -273,36 +312,13 @@ draw: {
 myMap.addControl(drawControl);
 myMap.addLayer(drawnItems);
 
-// define client
-          // We have created a empty dataset with private privacy
-          // and we give it insert permission for SQL and select permission for maps
-          // So we can display the geometries added on the map when we refresh
-        const client = new carto.Client({
-            apiKey: '1179d714b3b146401c9e7d6618ba1d043e644f4f',
-            username: 'sfrazier'
-        });
-        source = new carto.source.SQL(`
-            SELECT * FROM user_input
-        `);
+
+            //apiKey: '1179d714b3b146401c9e7d6618ba1d043e644f4f',
+            //username: 'sfrazier'
         
-       /* cartoCSS = new carto.style.CartoCSS(`
-            #layer {
-                // Create a style for the points
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    fillColor: 'blue',
-                    fillOpacity: 1,
-                    color: '#ffffff',
-                    weight: 0.25,
-                    opacity: 1,
-                    radius: 2.5
-            }`
-        );*/
-
-         // For the data source, enter the URL that goes to the SQL API, including our username and the SQL query
-    $.getJSON('https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q=SELECT* FROM manitofeatures', function (data) {
-
-        // Convert the JSON to a Leaflet GeoJson
+        
+        
+     /*   // Convert the JSON to a Leaflet GeoJson
         parkFeatures = L.geoJson(data, {
 
             // Create a style for the points
@@ -318,46 +334,61 @@ myMap.addLayer(drawnItems);
             },
         
         }).addTo(myMap)
-        
-        //cartoLayer = new carto.layer.Layer(source, cartoCSS);
+        */
 
-        //client.addLayer(cartoLayer);
-
-        //client.getLeafletLayer().addTo(myMap);
-    
-// Create Leaflet Draw Control for the draw tools and toolbox
-var drawControl = new L.Control.Draw({
-
-    // Disable drawing of polygons, polylines, rectangles, and circles
-    // Users will only be able to draw markers (points)
-    draw: {
-        polygon: false,
-        polyline: false,
-        rectangle: false,
-        circle: false,
-        circlemarker: false,
-    },
-
-    // Disable editing and deleting points
-    edit: false,
-    remove: false,
-    position: 'topleft'
-});
+      
 
 myMap.addControl(drawControl);
 
+// define client
+          // We have created a empty dataset with private privacy
+          // and we give it insert permission for SQL and select permission for maps
+          // So we can display the geometries added on the map when we refresh
+        const client = new carto.Client({
+            apiKey: '1179d714b3b146401c9e7d6618ba1d043e644f4f',
+            username: 'sfrazier'
+        });
+source = new carto.source.SQL(`
+            SELECT * FROM user_input
+        `);
 
-//"https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO test_table (column_name, column_name_2, the_geom) VALUES ('this is a string', 11, ST_SetSRID(ST_Point(-110, 43),4326))&api_key={api_key}"
+let cartoCSS = new carto.style.CartoCSS(`
+            #layer {
+                marker-fill: green;
+            }`
+        );
 
-    myMap.on(L.Draw.Event.CREATED, function (e) {
+cartoLayer = new carto.layer.Layer(source, cartoCSS);
+
+        client.addLayer(cartoLayer);
+
+        client.getLeafletLayer().addTo(myMap);
+
+myMap.on(L.Draw.Event.CREATED, function (e) {
             let layer = e.layer;
             myMap.addLayer(layer);
             let layerAdded = JSON.stringify(layer.toGeoJSON().geometry)
             
             // use Fetch API to send request
-            fetch("https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO user_input(the_geom, userinit, userreport, comments) VALUES(st_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326),cff, test2, pwew)&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f"),
-            //method: 'get',mode: 'no-cors'
-            //).then(function(response){
+            fetch(`https://sfrazier.carto.com/api/v2/sql?q=
+                    INSERT INTO user_input(userreport, comments, the_geom) VALUES('test', 'moreTest', St_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
+                    {
+                        headers: new Headers({
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*'
+                        }),
+                        method: 'get',
+                        mode: 'no-cors'
+                    }
+            ).then(function(response){
                 console.log(response)
+            }).catch(function(err){
+                console.log(err)
             })
-    });
+
+
+        });
+
+//https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO test_table (column_name, column_name_2, the_geom) VALUES ('this is a string', 11, ST_SetSRID(ST_Point(-110, 43),4326))&api_key={api_key}
+
