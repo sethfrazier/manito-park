@@ -58,11 +58,11 @@ var sidebar = L.control.sidebar({
 //Run the load data functions when the document loads
 $(document).ready(function(){
     //load all carto data
-    //loadParkBoundary();
+    loadParkBoundary();
     loadRoads();
     loadParkFeatures();
     loadTrails();
-    //loadUserInput();
+    loadUserInput();
 })
 
 /*
@@ -348,11 +348,11 @@ myMap.addControl(drawControl);
             apiKey: '1179d714b3b146401c9e7d6618ba1d043e644f4f',
             username: 'sfrazier'
         });
-source = new carto.source.SQL(`
+/*source = new carto.source.SQL(`
             SELECT * FROM user_input
         `);
 
-let cartoCSS = new carto.style.CartoCSS(`
+cartoCSS = new carto.style.CartoCSS(`
             #layer {
                 marker-fill: green;
             }`
@@ -362,7 +362,7 @@ cartoLayer = new carto.layer.Layer(source, cartoCSS);
 
         client.addLayer(cartoLayer);
 
-        client.getLeafletLayer().addTo(myMap);
+        client.getLeafletLayer().addTo(myMap);*/
 
 myMap.on(L.Draw.Event.CREATED, function (e) {
             let layer = e.layer;
@@ -386,9 +386,29 @@ myMap.on(L.Draw.Event.CREATED, function (e) {
             }).catch(function(err){
                 console.log(err)
             })
+    refreshLayer();
 
-
+            
         });
+
+// Function to refresh the layers to show the updated dataset
+function refreshLayer() {
+    
+    // Remove the existing wildlife observations layer
+    if (myMap.hasLayer(loadUserInput)) {
+        myMap.removeLayer(loadUserInput);
+    }
+    
+    // Reload the wildlife observations layer with the new point
+    //loadWildlifeObservations();
+    
+    // If the screen width is less than or equal to 850 pixels
+    if (screen.width <= 850) {
+        
+        // Collapse the sidebar
+        sidebar.close();        
+    }
+}
 
 //https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO test_table (column_name, column_name_2, the_geom) VALUES ('this is a string', 11, ST_SetSRID(ST_Point(-110, 43),4326))&api_key={api_key}
 
