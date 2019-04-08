@@ -1,13 +1,59 @@
 
 /*Map fill whole screen*/
-#mapid { 
-    
-    display: inline-block;
-    height: 100vh;
-    width: 100vw;
+html,
+body,
+#mapid {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: "Roboto", "Open Sans", sans-serif;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 /* CSS For Leaflet*/
 .leaflet-sidebar.leaflet.touch{
     height: 75%
+}
+
+#mapid {
+    z-index: 5;
+}
+
+/* BROWSER ADDS MARGIN BY DEFAULT. THIS GETS RID OF SCROLLBAR */
+
+body {
+    margin: 0;
+}
+
+p {
+    font-size: 1.1em;
+}
+
+/* CSS FOR THE LEAFLET SIDEBAR */
+
+/* Add CSS for sidebar height */
+@media (min-width: 768px) {
+    .leaflet-sidebar.leaflet-touch {
+        height: 75%;
+    }
+}
+
+.leaflet-sidebar-content {
+    background-color: rgba(255, 255, 255, 0.95)
+}
+
+.leaflet-sidebar-header {
+    background-color: #426230;
+}
+
+.leaflet-sidebar-tabs {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.leaflet-sidebar-tabs > li.active,
+.leaflet-sidebar-tabs > ul > li.active {
+    color: #fff;
+    background-color: #426230;
 }

@@ -100,23 +100,16 @@
                     <div id="fieldLabel"><label id="filterLabel">Theme:</label></div>
                     <select id="filterDropdown">
                         <option value="all">All Points of Interest</option>
-                        <option value="visitorCenters">Visitor Centers</option>
-                        <option value="drivingTour">Driving</option>
-                        <option value="hiking">Hiking</option>
-                        <option value="fishingBoating">Fishing and Boating</option>
-                        <option value="picnicking">Picnicking</option>
-                        <option value="beaches">Beaches</option>
-                        <option value="insideTheRefuge">Inside the Refuge</option>
                         <!-- Another option will be added dynamically if the user's current location is within the map bounds -->
                     </select>
                 </div>
             </div>
              
             <div class="leaflet-sidebar-pane" id="submitTab">
-                <h1 class="leaflet-sidebar-header">Submit Wildlife Observations
+                <h1 class="leaflet-sidebar-header">Submit a Report
                     <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
-                <p>Submit your own wildlife observations</p>
+                <p>Submit a concern you see below</p>
 
                 <!-- Build UI control-->
                 <div id='ui-controls'>
@@ -130,19 +123,21 @@
                     <div id="fieldLabel"><label>Longitude:</label></div>
                     <input type="text" id="longitude" disabled>
 
-                    <div id="fieldLabel"><label>Species Family:</label></div>
-                    <select id="speciesFamilyDropdown">
-                        <option value="default"></option>
-                        <option value="birds">Birds</option>
-                        <option value="mammals">Mammals</option>
-                        <option value="reptiles">Reptiles</option>
-                        <option value="amphibians">Amphibians</option>
-                        <option value="insectsArachnids">Insects and Arachnids</option>
-                        <option value="crustaceans">Crustaceans</option>
+                    <div id="fieldLabel"><label>Issue:</label></div>
+                    <select id="issueDropdown">
+                        <option value="SelectIssue">Select Issue</option>
+                        <option value="DownTree">Down Tree</option>
+                        <option value="dead animal">Dead Animal</option>
+                        <option value="graffiti">Graffiti</option>
+                        <option value="maintenance">Maintenance</option>
                     </select>
 
-                    <div id="fieldLabel"><label>Species:</label></div>
+                    <div id="fieldLabel"><label>Urgencey:</label></div>
                     <select id="speciesDropdown">
+                        <option value="">Select level</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
                     </select>
 
                     <br><br>
