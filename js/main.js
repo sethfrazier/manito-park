@@ -78,7 +78,7 @@ L.control.layers(baseMaps, overlayMaps, {
 myMap.zoomControl.setPosition('topleft');
 
 var sidebar = L.control.sidebar({
-    autopan:true
+    autopan:true,
     closeButton: true,
     container:'sidebar',
     position: 'left',
