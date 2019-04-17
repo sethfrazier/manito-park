@@ -4,12 +4,12 @@
 //});
 
 //function createMap(){
-    //create the map with map options
-    var myMap = L.map('mapid',{
-        center: [47.6366, -117.41119],
-        zoom: 16,
-        maxZoom: 19,
-        minZoom: 14, 
+//create the map with map options
+var myMap = L.map('mapid',{
+    center: [47.6366, -117.41119],
+    zoom: 16,
+    maxZoom: 19,
+    minZoom: 14,
 });
 
 var wikomidia=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
@@ -82,6 +82,7 @@ var sidebar = L.control.sidebar({
     closeButton: true,
     container:'sidebar',
     position: 'left',
+    
 }).addTo(myMap);
 
 //Run the load data functions when the document loads
@@ -323,10 +324,10 @@ function loadRoads() {
             onEachFeature: function (feature, layer) {
                 
                 // Get the length from the GeoJSON and round it to 2 decimal places
-                var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
+                //var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
 
                 // Bind the name and length to a popup
-                layer.bindPopup(feature.properties.route_name + " (" + length + " mi)");                
+                layer.bindPopup(feature.properties.name);                
 
             }
 
@@ -372,15 +373,15 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
             onEachFeature: function (feature, layer) {
 
                 // Bind the name to a popup
-                layer.bindPopup(feature.properties.feature_type);
+                layer.bindPopup(feature.properties.feattype+feature.properties.featname);
 
             }
         //}).addTo(myMap)
 
         }).addTo(parkFeaturesGroup);
 
-        // Turn the layer off by default
-        //map.removeLayer(trailFeaturesLayerGroup);
+        // Turn the layer on by default
+        myMap.addLayer(parkFeaturesGroup);
     });
 
 }
@@ -415,10 +416,10 @@ function loadTrails() {
             onEachFeature: function (feature, layer) {
                 
                 // Get the length from the GeoJSON and round it to 2 decimal places
-                var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
+                //var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
 
                 // Bind the name and length to a popup
-                layer.bindPopup(feature.properties.route_name + " (" + length + " mi)");                
+                layer.bindPopup(feature.properties.name);                
 
             }
 
@@ -469,7 +470,7 @@ function loadUserInput() {
         }).addTo(userGroup);
 
         // Turn the layer off by default
-        myMap.removeLayer(userGroup);
+        myMap.addLayer(userGroup);
     });
 
 }
@@ -498,6 +499,33 @@ draw: {
 
 myMap.addControl(drawControl);
 myMap.addLayer(drawnItems);
+
+// Function to check for required fields
+function checkForRequiredFields() {
+    
+    // Create variables to store the latitude and longitude
+    //var latitude = $('#ui-controls #latitude').val();
+    //var longitude = $('#ui-controls #longitude').val();
+    
+    // Create a variable to store the selected species family
+    selectedIssues = $("#issueDropdown option:selected").text();
+    console.log(selectedIssues);
+
+    // Create a variable to store the selected species family
+    selectedUrgancies = $("#urgancyDropdown option:selected").text();
+    console.log(selectedUrgancies);
+
+    // If the latitude, longitude, species family, and species are all populated
+    //if (latitude !== "" && longitude !== "" && selectedSpeciesFamily !== "" && selectedSpecies !== "") {
+    if (selectedIssues !==''&& selectedUrgancies!==''){
+        // Enable the Submit button
+        $('#submitButton').attr("disabled", false);
+    }
+    else {
+        // Disable the Submit button
+        $('#submitButton').attr("disabled", true);
+    }
+}
 
 
             //apiKey: '1179d714b3b146401c9e7d6618ba1d043e644f4f',
@@ -776,15 +804,26 @@ function cancelData() {
 
 //-----------------------------------------------------------------------------------------------------*/
 
+// Get the name and description submitted by the user
+
+checkForRequiredFields();
 
 myMap.on(L.Draw.Event.CREATED, function (e) {
     let layer = e.layer;
     myMap.addLayer(layer);
-    let layerAdded = JSON.stringify(layer.toGeoJSON().geometry)
-            
+    //get the issue, urgancy and comment from the user.
+    selectedIssue = $("#issueDropdown option:selected").text();
+    console.log(selectedIssue);
+    selectedUrgancy = $("#urgancyDropdown option:selected").text();
+    inputComment = commentEntry.value;
+    
+    checkForRequiredFields();
+    
+    layerAdded = JSON.stringify(layer.toGeoJSON().geometry)
+            /*`https://sfrazier.carto.com/api/v2/sql?q=
+        INSERT INTO user_input(userreport, importance, the_geom) VALUES('"+selectedIssue+"', 'selectedUrgancy', St_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`*/
     // use Fetch API to send request
-    fetch(`https://sfrazier.carto.com/api/v2/sql?q=
-        INSERT INTO user_input(userreport, importance, the_geom) VALUES('Dead Animal', 'High', St_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
+    fetch(`https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO user_input(userreport, importance, comment, the_geom)VALUES('${selectedIssue}', '${selectedUrgancy}', '${inputComment}',St_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
           {
             headers: new Headers({
             'Content-Type': 'application/json',
@@ -814,7 +853,7 @@ function refresh() {
         myMap.removeLayer(userFeatures);
     }
     
-    // Reload the wildlife observations layer with the new point
+    // Reload the park observations layer with the new point
     loadUserInput();
     
     // If the screen width is less than or equal to 850 pixels

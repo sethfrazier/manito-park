@@ -55,10 +55,10 @@
     <div id = "mapid" class ="sidebar-map"></div>
     
     <!-- sidebar-->
-     <div id="sidebar" class="leaflet-sidebar collapsed">
+     <div id="sidebar" class="leaflet-sidebar">
           <!-- Nav tabs -->
           <div class="leaflet-sidebar-tabs">
-              <ul class ="leaflet-tablist"> <!--role instead of class?-->
+              <ul role ="leaflet-tablist"> <!--role instead of class?-->
                   <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
                   <li><a href="#searchTab" role="tab"><i class="fa fa-search"></i></a></li>
                   <li><a href="#submitTab" role="tab"><i class="fa fa-map-marker-alt"></i></a></li>
@@ -69,7 +69,7 @@
          <!-- Tab panes -->
          <div class="leaflet-sidebar-content">
              
-             <div class="leaflet-sidebar-pane" id="home">
+             <div class="leaflet-sidebar-pane active" id="home">
                  <h1 class="leaflet-sidebar-header">Manito Park
                     <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
@@ -125,7 +125,7 @@
 
                     <div id="fieldLabel"><label>Issue:</label></div>
                     <select id="issueDropdown">
-                        <option value="SelectIssue">Select Issue</option>
+                        <option value=""></option>
                         <option value="DownTree">Down Tree</option>
                         <option value="dead animal">Dead Animal</option>
                         <option value="graffiti">Graffiti</option>
@@ -133,12 +133,15 @@
                     </select>
 
                     <div id="fieldLabel"><label>Urgencey:</label></div>
-                    <select id="speciesDropdown">
-                        <option value="">Select level</option>
+                    <select id="urgancyDropdown">
+                        <option value=""></option>
                         <option value="High">High</option>
                         <option value="Medium">Medium</option>
                         <option value="Low">Low</option>
                     </select>
+                    
+                    <div id="commentLable"><label>Submit Comments</label></div>
+                    <input type="text" name="commentEntry" id="commentEntry">
 
                     <br><br>
                     <input id="submitButton" type="submit" value="Submit" onclick="setData();" disabled>
