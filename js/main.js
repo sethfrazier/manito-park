@@ -200,7 +200,7 @@ function filterPointsOfInterest(selectedTheme) {
 
         // Update the SQL query to the one showing all visitor centers
         // 11 - information/visitor center     
-        var sql = "SELECT * FROM manitofeatures WHERE feattype LIKE '" + selectedTheme + "'";
+        var sql = "SELECT * FROM manitofeatures WHERE feattype = '" + selectedTheme + "'";
 
         // Reload the points of interest
         loadParkFeatures(sql);
