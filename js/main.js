@@ -400,6 +400,7 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
 
     // If the layer is already shown on the map, remove it
     if (myMap.hasLayer(parkFeatures)) {
+        console.log('removing')
         myMap.removeLayer(parkFeatures);
     }
 
@@ -851,7 +852,7 @@ function setData(){
 
     // use Fetch API to send request
     fetch(`https://sfrazier.carto.com/api/v2/sql?q=
-        INSERT INTO user_input(userreport, importance, the_geom) VALUES(${issue}, ${urgency}, St_GeomFromTEXT('POINT(${longitude} ${latitude})', 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
+        INSERT INTO user_input(userreport, importance, the_geom) VALUES('${issue}', '${urgency}', St_GeomFromTEXT('POINT(${longitude} ${latitude})', 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
           {
             headers: new Headers({
             'Content-Type': 'application/json',
