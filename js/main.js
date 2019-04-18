@@ -149,7 +149,7 @@ featureSelectBox.on('change', function() {
     console.log(selectedTheme);
 });
 
-// Function to filter the points of interest based on the selected theme
+/*// Function to filter the points of interest based on the selected theme
 function filterPointsOfInterest(selectedTheme) {
 
     // All Points of Interest
@@ -167,7 +167,7 @@ function filterPointsOfInterest(selectedTheme) {
 
         // Update the SQL query to the one showing all visitor centers
         // 11 - information/visitor center     
-        var sql = "SELECT * FROM manitofeatures WHERE feattype LIKE '"+selectedTheme+"'";
+        var sql = "SELECT * FROM manitofeatures WHERE feattype ILIKE '"+selectedTheme+"'";
 
         // Reload the points of interest
         loadParkFeatures(sql);
@@ -179,138 +179,138 @@ function filterPointsOfInterest(selectedTheme) {
         // Collapse the sidebar
         sidebar.close();        
     }
-}
+}*/
 
 
-// // Function to filter the points of interest based on the selected theme
-// function filterPointsOfInterest(selectedTheme) {
+ // Function to filter the points of interest based on the selected theme
+ function filterPointsOfInterest(selectedTheme) {
 
-//     // All Points of Interest
-//     if (selectedTheme == "all") {
+     // All Points of Interest
+     if (selectedTheme == "all") {
 
-//         // Update the SQL query to the one showing all features
-//         var sqlQueryAll = sqlQueryParkFeatures
+         // Update the SQL query to the one showing all features
+         var sqlQueryAll = sqlQueryParkFeatures
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlQueryAll);
-//     }
+         // Reload the points of interest
+         loadParkFeatures(sqlQueryAll);
+     }
     
-//     // Practical Information
-//     else if (selectedTheme == "Entrance") {
+     // Practical Information
+     else if (selectedTheme == "Entrance") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlEntrance = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Entrance'";
+         // Update the SQL query to the one showing all visitor centers
+         // 11 - information/visitor center     
+         var sqlEntrance = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Entrance'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlEntrance);
-//         console.log(loadParkFeatures);
-//     }
+         // Reload the points of interest
+         loadParkFeatures(sqlEntrance);
+         console.log(loadParkFeatures);
+     }
     
-//      // Practical Information
-//     else if (selectedTheme == "Garden") {
+     // Practical Information
+     else if (selectedTheme == "Garden") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlGarden = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Garden'";
+         // Update the SQL query to the one showing all visitor centers
+        // 11 - information/visitor center     
+         var sqlGarden = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Garden'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlGarden);
-//         console.log(loadParkFeatures);
-//     }
+        // Reload the points of interest
+        loadParkFeatures(sqlGarden);
+         console.log(loadParkFeatures);
+    }
     
-//      // Practical Information
-//     else if (selectedTheme == "Historic Area") {
+      // Practical Information
+     else if (selectedTheme == "Historic Area") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlHistoric = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Historic Area'";
+         // Update the SQL query to the one showing all visitor centers
+        // 11 - information/visitor center     
+        var sqlHistoric = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Historic Area'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlHistoric);
-//         console.log(loadParkFeatures);
-//     }
+         // Reload the points of interest
+         loadParkFeatures(sqlHistoric);
+         console.log(loadParkFeatures);
+     }
     
-//      // Practical Information
-//     else if (selectedTheme == "Natural Area") {
+      // Practical Information
+     else if (selectedTheme == "Natural Area") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlNatural = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Natural Area'";
+        // Update the SQL query to the one showing all visitor centers
+        // 11 - information/visitor center     
+         var sqlNatural = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Natural Area'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlNatural);
-//         console.log(loadParkFeatures);
-//     }
+         // Reload the points of interest
+         loadParkFeatures(sqlNatural);
+         console.log(loadParkFeatures);
+    }
     
-//     // Practical Information
-//     else if (selectedTheme == "Parking Area") {
+     // Practical Information
+     else if (selectedTheme == "Parking Area") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlParking = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Parking Area'";
+         // Update the SQL query to the one showing all visitor centers
+         // 11 - information/visitor center     
+         var sqlParking = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Parking Area'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlParking);
-//         console.log(loadParkFeatures);
-//     }
+        // Reload the points of interest
+        loadParkFeatures(sqlParking);
+         console.log(loadParkFeatures);
+     }
     
-//     // Practical Information
-//     else if (selectedTheme == "Play Area") {
+     // Practical Information
+    else if (selectedTheme == "Play Area") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlPlay = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Play Area'";
+         // Update the SQL query to the one showing all visitor centers
+        // 11 - information/visitor center     
+         var sqlPlay = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Play Area'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlPlay);
-//         console.log(loadParkFeatures);
-//     }
+         // Reload the points of interest
+         loadParkFeatures(sqlPlay);
+         console.log(loadParkFeatures);
+     }
     
-//      // Practical Information
-//     else if (selectedTheme == "Rest Room") {
+      // Practical Information
+     else if (selectedTheme == "Rest Room") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlRestroom = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Rest Room'";
+        // Update the SQL query to the one showing all visitor centers
+         // 11 - information/visitor center     
+        var sqlRestroom = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Rest Room'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlRestroom);
-//         console.log(loadParkFeatures);
-//     }
+         // Reload the points of interest
+         loadParkFeatures(sqlRestroom);
+         console.log(loadParkFeatures);
+     }
     
-//      // Practical Information
-//     else if (selectedTheme == "Structure") {
+      // Practical Information
+     else if (selectedTheme == "Structure") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlStructure = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Structure'";
+        // Update the SQL query to the one showing all visitor centers
+         // 11 - information/visitor center     
+       var sqlStructure = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Structure'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlStructure);
-//         console.log(loadParkFeatures);
-//     }
+        // Reload the points of interest
+        loadParkFeatures(sqlStructure);
+         console.log(loadParkFeatures);
+     }
     
-//      // Practical Information
-//     else if (selectedTheme == "Water Feature") {
+      // Practical Information
+     else if (selectedTheme == "Water Feature") {
 
-//         // Update the SQL query to the one showing all visitor centers
-//         // 11 - information/visitor center     
-//         var sqlWater = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Water Feature'";
+         // Update the SQL query to the one showing all visitor centers
+         // 11 - information/visitor center     
+         var sqlWater = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Water Feature'";
 
-//         // Reload the points of interest
-//         loadParkFeatures(sqlWater);
-//         console.log(loadParkFeatures);
-//     }
+         // Reload the points of interest
+         loadParkFeatures(sqlWater);
+         console.log(loadParkFeatures);
+     }
 
-//     // If the screen width is less than or equal to 850 pixels
-//     if (screen.width <= 850) {
+    // If the screen width is less than or equal to 850 pixels
+     if (screen.width <= 850) {
         
-//         // Collapse the sidebar
-//         sidebar.close();        
-//     }
+         // Collapse the sidebar
+        sidebar.close();        
+     }
 
-// }
+ }
 
 // Function to load the park boundary onto the map
 function loadParkBoundary() {
