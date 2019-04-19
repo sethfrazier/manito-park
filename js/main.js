@@ -115,7 +115,72 @@ $(document).ready(function(){
     loadTrails();
     loadUserInput();
     
-})
+    // Once the document is ready, see if you can get a geolocation and use it to center the map
+
+
+    // Set a default center for the map
+    var center = [-89.7814734, 43.4672891];
+
+    // See if we can get the location from the device
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            // Set Center to User location
+            center = [position.coords.longitude, position.coords.latitude];
+            // Load the map with the User's location
+            loadMap(center);
+        }, positionError);
+    } else {
+        // x.innerHTML = "Geolocation is not supported by this browser.";
+        loadMap(center);  //Load using the deafult location
+    }
+    
+});
+
+// Handle Position errors from navigator.geolocation
+    function positionError(error) {
+        
+        /** This function is needed. Without it when the user did not provide permission
+        * or position was unavailable, the system failed to work.
+        * I left the full code here as we may want to use the different cases for specific error
+        * messages to the user.   */
+        
+        var center = [-89.7814734, 43.4672891];
+        
+        switch (error.code) {
+
+            case error.PERMISSION_DENIED:
+                // x.innerHTML = "User denied the request for Geolocation."
+            loadMap(center);
+            break;
+
+   case error.POSITION_UNAVAILABLE:
+
+     // x.innerHTML = "Location information is unavailable."
+
+     loadMap(center);
+
+     break;
+
+   case error.TIMEOUT:
+
+     // x.innerHTML = "The request to get user location timed out."
+
+     loadMap(center);
+
+     break;
+
+   case error.UNKNOWN_ERROR:
+
+     // x.innerHTML = "An unknown error occurred."
+
+     loadMap(center);
+
+     break;
+
+ }
+
+}
 
 getFeatureList();
 /*
