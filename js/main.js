@@ -3,13 +3,35 @@
 //  showAll();
 //});
 
+var controlOnMap = false;
+// $("#urgencyDropdown").change(console.log("urgencyChanged"))
+$('#urgencyDropdown').on('change', function() {
+    console.log(this.value);
+    checkForRequiredFields();
+  });
+
+$('#issueDropdown').on('change', function() {
+    console.log(this.value);
+    checkForRequiredFields();
+  });
+
+$('#ui-controls #latitude').on('change', function() {
+    console.log(this.value);
+    checkForRequiredFields();
+  });
+
+$('#ui-controls #longitude').on('change', function() {
+    console.log(this.value);
+    checkForRequiredFields();
+  });
+
 //function createMap(){
-//create the map with map options
-var myMap = L.map('mapid',{
-    center: [47.6366, -117.41119],
-    zoom: 16,
-    maxZoom: 19,
-    minZoom: 14,
+    //create the map with map options
+    var myMap = L.map('mapid',{
+        center: [47.6366, -117.41119],
+        zoom: 16,
+        maxZoom: 19,
+        minZoom: 14, 
 });
 
 var wikomidia=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
@@ -82,7 +104,6 @@ var sidebar = L.control.sidebar({
     closeButton: true,
     container:'sidebar',
     position: 'left',
-    
 }).addTo(myMap);
 
 //Run the load data functions when the document loads
@@ -128,8 +149,7 @@ featureSelectBox.on('change', function() {
     console.log(selectedTheme);
 });
 
-        
-// Function to filter the points of interest based on the selected theme
+/*// Function to filter the points of interest based on the selected theme
 function filterPointsOfInterest(selectedTheme) {
 
     // All Points of Interest
@@ -143,121 +163,186 @@ function filterPointsOfInterest(selectedTheme) {
     }
     
     // Practical Information
-    else if (selectedTheme == "Entrance") {
+    else {
 
         // Update the SQL query to the one showing all visitor centers
         // 11 - information/visitor center     
-        var sqlEntrance = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Entrance'";
+        var sql = "SELECT * FROM manitofeatures WHERE feattype ILIKE '"+selectedTheme+"'";
 
         // Reload the points of interest
-        loadParkFeatures(sqlEntrance);
-        console.log(loadParkFeatures);
+        loadParkFeatures(sql);
+        console.log(selectedTheme);
     }
-    
-     // Practical Information
-    else if (selectedTheme == "Garden") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlGarden = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Garden'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlGarden);
-        console.log(loadParkFeatures);
-    }
-    
-     // Practical Information
-    else if (selectedTheme == "Historic Area") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlHistoric = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Historic Area'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlHistoric);
-        console.log(loadParkFeatures);
-    }
-    
-     // Practical Information
-    else if (selectedTheme == "Natural Area") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlNatural = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Natural Area'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlNatural);
-        console.log(loadParkFeatures);
-    }
-    
-    // Practical Information
-    else if (selectedTheme == "Parking Area") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlParking = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Parking Area'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlParking);
-        console.log(loadParkFeatures);
-    }
-    
-    // Practical Information
-    else if (selectedTheme == "Play Area") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlPlay = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Play Area'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlPlay);
-        console.log(loadParkFeatures);
-    }
-    
-     // Practical Information
-    else if (selectedTheme == "Rest Room") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlRestroom = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Rest Room'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlRestroom);
-        console.log(loadParkFeatures);
-    }
-    
-     // Practical Information
-    else if (selectedTheme == "Structure") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlStructure = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Structure'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlStructure);
-        console.log(loadParkFeatures);
-    }
-    
-     // Practical Information
-    else if (selectedTheme == "Water Feature") {
-
-        // Update the SQL query to the one showing all visitor centers
-        // 11 - information/visitor center     
-        var sqlWater = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Water Feature'";
-
-        // Reload the points of interest
-        loadParkFeatures(sqlWater);
-        console.log(loadParkFeatures);
-    }
-
     // If the screen width is less than or equal to 850 pixels
     if (screen.width <= 850) {
         
         // Collapse the sidebar
         sidebar.close();        
     }
+}*/
 
+
+// Function to filter the points of interest based on the selected theme
+function filterPointsOfInterest(selectedTheme) {
+
+    // All Points of Interest
+    if (selectedTheme == "all") {
+
+        // Update the SQL query to the one showing all features
+        var sqlQueryAll = sqlQueryParkFeatures
+
+        // Reload the points of interest
+        loadParkFeatures(sqlQueryAll);
+    }
+   
+    // Practical Information
+    else {
+
+        // Update the SQL query to the one showing all visitor centers
+        // 11 - information/visitor center     
+        var sql = "SELECT * FROM manitofeatures WHERE feattype = '" + selectedTheme + "'";
+
+        // Reload the points of interest
+        loadParkFeatures(sql);
+        console.log(loadParkFeatures);
+    }
+    // If the screen width is less than or equal to 850 pixels
+     if (screen.width <= 850) {
+        
+         // Collapse the sidebar
+        sidebar.close();        
+     }
 }
+
+//  // Function to filter the points of interest based on the selected theme
+//  function filterPointsOfInterest(selectedTheme) {
+
+//      // All Points of Interest
+//      if (selectedTheme == "all") {
+
+//          // Update the SQL query to the one showing all features
+//          var sqlQueryAll = sqlQueryParkFeatures
+
+//          // Reload the points of interest
+//          loadParkFeatures(sqlQueryAll);
+//      }
+    
+//      // Practical Information
+//      else if (selectedTheme == "Entrance") {
+
+//          // Update the SQL query to the one showing all visitor centers
+//          // 11 - information/visitor center     
+//          var sqlEntrance = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Entrance'";
+
+//          // Reload the points of interest
+//          loadParkFeatures(sqlEntrance);
+//          console.log(loadParkFeatures);
+//      }
+    
+//      // Practical Information
+//      else if (selectedTheme == "Garden") {
+
+//          // Update the SQL query to the one showing all visitor centers
+//         // 11 - information/visitor center     
+//          var sqlGarden = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Garden'";
+
+//         // Reload the points of interest
+//         loadParkFeatures(sqlGarden);
+//          console.log(loadParkFeatures);
+//     }
+    
+//       // Practical Information
+//      else if (selectedTheme == "Historic Area") {
+
+//          // Update the SQL query to the one showing all visitor centers
+//         // 11 - information/visitor center     
+//         var sqlHistoric = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Historic Area'";
+
+//          // Reload the points of interest
+//          loadParkFeatures(sqlHistoric);
+//          console.log(loadParkFeatures);
+//      }
+    
+//       // Practical Information
+//      else if (selectedTheme == "Natural Area") {
+
+//         // Update the SQL query to the one showing all visitor centers
+//         // 11 - information/visitor center     
+//          var sqlNatural = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Natural Area'";
+
+//          // Reload the points of interest
+//          loadParkFeatures(sqlNatural);
+//          console.log(loadParkFeatures);
+//     }
+    
+//      // Practical Information
+//      else if (selectedTheme == "Parking Area") {
+
+//          // Update the SQL query to the one showing all visitor centers
+//          // 11 - information/visitor center     
+//          var sqlParking = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Parking Area'";
+
+//         // Reload the points of interest
+//         loadParkFeatures(sqlParking);
+//          console.log(loadParkFeatures);
+//      }
+    
+//      // Practical Information
+//     else if (selectedTheme == "Play Area") {
+
+//          // Update the SQL query to the one showing all visitor centers
+//         // 11 - information/visitor center     
+//          var sqlPlay = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Play Area'";
+
+//          // Reload the points of interest
+//          loadParkFeatures(sqlPlay);
+//          console.log(loadParkFeatures);
+//      }
+    
+//       // Practical Information
+//      else if (selectedTheme == "Rest Room") {
+
+//         // Update the SQL query to the one showing all visitor centers
+//          // 11 - information/visitor center     
+//         var sqlRestroom = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Rest Room'";
+
+//          // Reload the points of interest
+//          loadParkFeatures(sqlRestroom);
+//          console.log(loadParkFeatures);
+//      }
+    
+//       // Practical Information
+//      else if (selectedTheme == "Structure") {
+
+//         // Update the SQL query to the one showing all visitor centers
+//          // 11 - information/visitor center     
+//        var sqlStructure = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Structure'";
+
+//         // Reload the points of interest
+//         loadParkFeatures(sqlStructure);
+//          console.log(loadParkFeatures);
+//      }
+    
+//       // Practical Information
+//      else if (selectedTheme == "Water Feature") {
+
+//          // Update the SQL query to the one showing all visitor centers
+//          // 11 - information/visitor center     
+//          var sqlWater = "SELECT * FROM manitofeatures WHERE feattype ILIKE 'Water Feature'";
+
+//          // Reload the points of interest
+//          loadParkFeatures(sqlWater);
+//          console.log(loadParkFeatures);
+//      }
+
+//     // If the screen width is less than or equal to 850 pixels
+//      if (screen.width <= 850) {
+        
+//          // Collapse the sidebar
+//         sidebar.close();        
+//      }
+
+//  }
 
 // Function to load the park boundary onto the map
 function loadParkBoundary() {
@@ -322,12 +407,13 @@ function loadRoads() {
 
             // Loop through each feature
             onEachFeature: function (feature, layer) {
+                // console.log(feature.properties)
                 
                 // Get the length from the GeoJSON and round it to 2 decimal places
-                //var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
+                var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
 
                 // Bind the name and length to a popup
-                layer.bindPopup(feature.properties.name);                
+                layer.bindPopup(feature.properties.name + " (" + length + " mi)");                
 
             }
 
@@ -346,6 +432,7 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
 
     // If the layer is already shown on the map, remove it
     if (myMap.hasLayer(parkFeatures)) {
+        console.log('removing')
         myMap.removeLayer(parkFeatures);
     }
 
@@ -353,7 +440,7 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
 
     // For the data source, enter the URL that goes to the SQL API, including our username and the SQL query
     $.getJSON("https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q="+ sqlFilteredQueryFeat, function (data) {
-            console.log(sqlFilteredQueryFeat);
+        console.log(sqlFilteredQueryFeat);
         // Convert the JSON to a Leaflet GeoJson
         parkFeatures = L.geoJson(data, {
 
@@ -371,17 +458,18 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
 
             // Loop through each feature
             onEachFeature: function (feature, layer) {
+                // console.log(feature.properties)
 
                 // Bind the name to a popup
-                layer.bindPopup(feature.properties.feattype+feature.properties.featname);
+                layer.bindPopup('<b>'+feature.properties.feattype+'</b> <br>'+feature.properties.featname);
 
             }
         //}).addTo(myMap)
 
         }).addTo(parkFeaturesGroup);
 
-        // Turn the layer on by default
-        myMap.addLayer(parkFeaturesGroup);
+        // Turn the layer off by default
+        //map.removeLayer(trailFeaturesLayerGroup);
     });
 
 }
@@ -414,12 +502,13 @@ function loadTrails() {
 
             // Loop through each feature
             onEachFeature: function (feature, layer) {
+                // console.log(feature.properties)
                 
                 // Get the length from the GeoJSON and round it to 2 decimal places
-                //var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
+                var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
 
                 // Bind the name and length to a popup
-                layer.bindPopup(feature.properties.name);                
+                layer.bindPopup(feature.properties.name + " (" + length + " mi)");                
 
             }
 
@@ -442,7 +531,8 @@ function loadUserInput() {
     // Run the specified sqlQuery from CARTO, return it as a JSON, convert it to a Leaflet GeoJson, and add it to the map with a popup
 
     // For the data source, enter the URL that goes to the SQL API, including our username and the SQL query
-    $.getJSON('https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q=SELECT* FROM user_input', function (data) {
+    //      Added clause to exclude blank reports.
+    $.getJSON("https://sfrazier.carto.com/api/v2/sql?format=GeoJSON&q=SELECT* FROM user_input WHERE userreport !=''", function (data) {
 
         // Convert the JSON to a Leaflet GeoJson
         userFeatures = L.geoJson(data, {
@@ -461,16 +551,17 @@ function loadUserInput() {
 
             // Loop through each feature
             onEachFeature: function (feature, layer) {
+                // console.log(feature.properties)
 
                 // Bind the name to a popup
-                layer.bindPopup(feature.properties.feature_type);
+                layer.bindPopup(feature.properties.userreport);
 
             }
 
         }).addTo(userGroup);
 
         // Turn the layer off by default
-        myMap.addLayer(userGroup);
+        // myMap.removeLayer(userGroup);
     });
 
 }
@@ -497,35 +588,10 @@ draw: {
     position: 'topleft'
 });
 
-myMap.addControl(drawControl);
+// myMap.addControl(drawControl);
+// Removed the above so it doesn't draw until called
+
 myMap.addLayer(drawnItems);
-
-// Function to check for required fields
-function checkForRequiredFields() {
-    
-    // Create variables to store the latitude and longitude
-    //var latitude = $('#ui-controls #latitude').val();
-    //var longitude = $('#ui-controls #longitude').val();
-    
-    // Create a variable to store the selected species family
-    selectedIssues = $("#issueDropdown option:selected").text();
-    console.log(selectedIssues);
-
-    // Create a variable to store the selected species family
-    selectedUrgancies = $("#urgancyDropdown option:selected").text();
-    console.log(selectedUrgancies);
-
-    // If the latitude, longitude, species family, and species are all populated
-    //if (latitude !== "" && longitude !== "" && selectedSpeciesFamily !== "" && selectedSpecies !== "") {
-    if (selectedIssues !==''&& selectedUrgancies!==''){
-        // Enable the Submit button
-        $('#submitButton').attr("disabled", false);
-    }
-    else {
-        // Disable the Submit button
-        $('#submitButton').attr("disabled", true);
-    }
-}
 
 
             //apiKey: '1179d714b3b146401c9e7d6618ba1d043e644f4f',
@@ -556,7 +622,7 @@ cartoLayer = new carto.layer.Layer(source, cartoCSS);
 
         client.getLeafletLayer().addTo(myMap);*/
 
-/*//-----------------------------------------------------------------------------------------------------
+// /*//-----------------------------------------------------------------------------------------------------
 
 // Function that will run when the location of the user is found
 function locationFound(e) {
@@ -571,7 +637,7 @@ function locationFound(e) {
         alert("You are outside of the refuge");
 
         // Reset the map to the refuge bounds
-        map.fitBounds(bounds);
+        myMap.fitBounds(bounds);
 
         // Disable the Use Current Location button, so observations can only be submitted by clicking a point
         $('#ui-controls #currentLocationButton').attr("disabled", true);
@@ -581,8 +647,8 @@ function locationFound(e) {
     } else {
 
         // Remove the locationMarker if it's already on the map
-        if (map.hasLayer(locationMarker)) {
-            map.removeLayer(locationMarker);
+        if (myMap.hasLayer(locationMarker)) {
+            myMap.removeLayer(locationMarker);
         }
 
         // Add the locationMarker layer to the map at the current location
@@ -647,7 +713,7 @@ function locationNotFound(e) {
 function startEdits() {
 
     // Remove the drawnItems layer from the map
-    map.removeLayer(drawnItems);
+    myMap.removeLayer(drawnItems);
     
     // Create a new empty drawnItems feature group to capture the next user-drawn data
     drawnItems = new L.FeatureGroup();  
@@ -660,12 +726,12 @@ function startEdits() {
 
     // If the draw control is already on the map remove it and set the controlOnMap flag back to false
     if (controlOnMap === true) {
-        map.removeControl(drawControl);
+        myMap.removeControl(drawControl);
         controlOnMap = false;
     }
 
     // Add the draw control to the map and set the controlOnMap flag to true
-    map.addControl(drawControl);
+    myMap.addControl(drawControl);
     controlOnMap = true;
     
     // If the screen width is less than or equal to 850 pixels
@@ -682,7 +748,7 @@ function startEdits() {
 function stopEdits() {
 
     // Remove the draw control from the map and set the controlOnMap flag back to false
-    map.removeControl(drawControl);
+    myMap.removeControl(drawControl);
     controlOnMap = false;
 }
 
@@ -693,7 +759,7 @@ function addPointAtCurrentLocation() {
     locateUser();
     
     // Remove the drawnItems layer from the map
-    map.removeLayer(drawnItems);
+    myMap.removeLayer(drawnItems);
     
     // Create a new empty drawnItems feature group to capture the next user-drawn data
     drawnItems = new L.FeatureGroup();    
@@ -716,7 +782,7 @@ function addPointAtCurrentLocation() {
     drawnItems.addLayer(locationMarker);
 
     // Add the drawnItems feature group to the map
-    map.addLayer(drawnItems);
+    myMap.addLayer(drawnItems);
 
     // Expand the sidebar and show the submit tab for the user to enter attributes about the new feature
     sidebar.open('submitTab');
@@ -726,7 +792,7 @@ function addPointAtCurrentLocation() {
 
 // Function to run when a feature is drawn on the map
 // Add the feature to the drawnItems layer and get its coordinates
-map.on('draw:created', function (e) {
+myMap.on('draw:created', function (e) {
 
     // Remove the point tool
     stopEdits();
@@ -745,7 +811,7 @@ map.on('draw:created', function (e) {
     drawnItems.addLayer(layer);
 
     // Add the drawnItems feature group to the map
-    map.addLayer(drawnItems);
+    myMap.addLayer(drawnItems);
 
     // Expand the sidebar and show the submit tab for the user to enter attributes about the new feature
     sidebar.open('submitTab');
@@ -767,19 +833,19 @@ function checkForRequiredFields() {
     var longitude = $('#ui-controls #longitude').val();
     
     // Create a variable to store the selected species family
-    selectedSpeciesFamily = $("#speciesFamilyDropdown option:selected").text();
+    selectedUrgency = $("#urgencyDropdown").val();
 
     // Create a variable to store the selected species family
-    selectedSpecies = $("#speciesDropdown option:selected").text();
+    selectedIssue = $("#issueDropdown").val();
 
     // If the latitude, longitude, species family, and species are all populated
-    if (latitude !== "" && longitude !== "" && selectedSpeciesFamily !== "" && selectedSpecies !== "") {
+    if (latitude !== "" && longitude !== "" && selectedUrgency !== "" && selectedIssue !== "") {
         // Enable the Submit button
-        $('#submitButton').attr("disabled", false);
+        $('#submitButton').prop("disabled", false);
     }
     else {
         // Disable the Submit button
-        $('#submitButton').attr("disabled", true);
+        $('#submitButton').prop("disabled", true);
     }
 }
 
@@ -787,7 +853,7 @@ function checkForRequiredFields() {
 function cancelData() {
     
     // Remove the drawnItems layer from the map
-    map.removeLayer(drawnItems);
+    myMap.removeLayer(drawnItems);
     
     // Create a new empty drawnItems feature group to capture the next user-drawn data
     drawnItems = new L.FeatureGroup();
@@ -795,8 +861,8 @@ function cancelData() {
     // Clear the latitude and longitude textboxes and species family and species dropdowns
     $('#ui-controls #latitude').val('');
     $('#ui-controls #longitude').val('');
-    $('#speciesFamilyDropdown').val('default').attr('selected');
-    $('#speciesDropdown').val('default').attr('selected');
+    $('#urgencyDropdown').val('default').attr('selected');
+    $('#issueDropdown').val('default').attr('selected');
     
     // Disable the Submit button
     $('#submitButton').attr("disabled", true);
@@ -804,26 +870,50 @@ function cancelData() {
 
 //-----------------------------------------------------------------------------------------------------*/
 
-// Get the name and description submitted by the user
+function setData(){
+    // get the variables from teh fields
+    // Create variables to store the latitude and longitude
+    var latitude = $('#ui-controls #latitude').val();
+    var longitude = $('#ui-controls #longitude').val();
+    
+    // Create a variable to store the selected species family
+    urgency = $("#urgencyDropdown").val();
 
-checkForRequiredFields();
+    // Create a variable to store the selected species family
+    issue = $("#issueDropdown").val();
+
+    // use Fetch API to send request
+    fetch(`https://sfrazier.carto.com/api/v2/sql?q=
+        INSERT INTO user_input(userreport, importance, the_geom) VALUES('${issue}', '${urgency}', St_GeomFromTEXT('POINT(${longitude} ${latitude})', 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
+          {
+            headers: new Headers({
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*'
+                }),
+                method: 'get',
+                mode: 'no-cors'
+            }
+            ).then(function(response){
+                console.log(response)
+            }).catch(function(err){
+                console.log(err)
+            })
+    
+    refresh();
+    cancelData();
+            
+}
+
 
 myMap.on(L.Draw.Event.CREATED, function (e) {
     let layer = e.layer;
     myMap.addLayer(layer);
-    //get the issue, urgancy and comment from the user.
-    selectedIssue = $("#issueDropdown option:selected").text();
-    console.log(selectedIssue);
-    selectedUrgancy = $("#urgancyDropdown option:selected").text();
-    inputComment = commentEntry.value;
-    
-    checkForRequiredFields();
-    
-    layerAdded = JSON.stringify(layer.toGeoJSON().geometry)
-            /*`https://sfrazier.carto.com/api/v2/sql?q=
-        INSERT INTO user_input(userreport, importance, the_geom) VALUES('"+selectedIssue+"', 'selectedUrgancy', St_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`*/
+    let layerAdded = JSON.stringify(layer.toGeoJSON().geometry)
+            
     // use Fetch API to send request
-    fetch(`https://sfrazier.carto.com/api/v2/sql?q=INSERT INTO user_input(userreport, importance, comment, the_geom)VALUES('${selectedIssue}', '${selectedUrgancy}', '${inputComment}',St_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
+    fetch(`https://sfrazier.carto.com/api/v2/sql?q=
+        INSERT INTO user_input(userreport, importance, the_geom) VALUES('Dead Animal', 'High', St_SetSRID(St_GeomFromGeoJSON('${layerAdded}'), 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
           {
             headers: new Headers({
             'Content-Type': 'application/json',
@@ -853,7 +943,7 @@ function refresh() {
         myMap.removeLayer(userFeatures);
     }
     
-    // Reload the park observations layer with the new point
+    // Reload the wildlife observations layer with the new point
     loadUserInput();
     
     // If the screen width is less than or equal to 850 pixels
