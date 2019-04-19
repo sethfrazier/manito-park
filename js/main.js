@@ -279,6 +279,34 @@ function filterPointsOfInterest(selectedTheme) {
      }
 }
 
+// Create a marker for a parking area
+var parkingIcon = L.icon({
+    iconUrl: "icons/16_parking.png",
+    iconSize: getIconSize()    
+});
+
+// Function to get the icon size based on the zoom level
+function getIconSize() {
+    
+    // Set the default icon size (height and width) in pixels
+    var iconSize = [21, 22];
+
+    // If the map is zoomed out to the extent of the refuge, set a smaller icon size
+    if (myMap.getZoom() < 13) {
+        iconSize = [10, 11];
+    }
+
+    // Return the icon size
+    return iconSize;
+};
+
+// Function to get the icon for each visitor service feature based on its category and get the icon size based on the map's zoom level
+function getVisitorServiceIcon(category) { 
+    
+
+    
+}
+
 //  // Function to filter the points of interest based on the selected theme
 //  function filterPointsOfInterest(selectedTheme) {
 
@@ -511,13 +539,20 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
 
             // Create a style for the points
             pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
+                
+                //get the feature category to use its icon
+                var featureType = feature.properties.category;
+                /*return L.circleMarker(latlng, {
                     fillColor: '#5d0000',
                     fillOpacity: 1,
                     color: '#ffffff',
                     weight: 0.25,
                     opacity: 1,
-                    radius: 2.5
+                    radius: 2.5*/
+                
+                return L.marker(latlng,{
+                    icon: getParkFeatureIcon(featureType)
+                
                 });
             },
 
@@ -529,16 +564,23 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
                 layer.bindPopup('<b>'+feature.properties.feattype+'</b> <br>'+feature.properties.featname);
 
             }
+        
         //}).addTo(myMap)
 
         }).addTo(parkFeaturesGroup);
 
-        // Turn the layer off by default
-        //map.removeLayer(trailFeaturesLayerGroup);
+        // Turn the layer on by default
+        myMap.addLayer(parkFeaturesGroup);
     });
 
 }
 
+function getParkFeatureIcon(category){
+    if (category=="parking"){
+        parkingIcon.options.iconSize = getIconSize();
+        return parkingIcon;
+    }
+};
 
 // Function to load the park trails onto the map
 function loadTrails() {
@@ -936,20 +978,22 @@ function cancelData() {
 //-----------------------------------------------------------------------------------------------------*/
 
 function setData(){
-    // get the variables from teh fields
+    // get the variables from the fields
     // Create variables to store the latitude and longitude
     var latitude = $('#ui-controls #latitude').val();
     var longitude = $('#ui-controls #longitude').val();
     
-    // Create a variable to store the selected species family
+    // Create a variable to store the selected urgency
     urgency = $("#urgencyDropdown").val();
 
-    // Create a variable to store the selected species family
+    // Create a variable to store the selected issue
     issue = $("#issueDropdown").val();
+    
+    inputComment = commentEntry.value;
 
     // use Fetch API to send request
     fetch(`https://sfrazier.carto.com/api/v2/sql?q=
-        INSERT INTO user_input(userreport, importance, the_geom) VALUES('${issue}', '${urgency}', St_GeomFromTEXT('POINT(${longitude} ${latitude})', 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
+        INSERT INTO user_input(userreport, importance, comment, the_geom) VALUES('${issue}', '${urgency}','${inputComment}', St_GeomFromTEXT('POINT(${longitude} ${latitude})', 4326))&api_key=1179d714b3b146401c9e7d6618ba1d043e644f4f`,
           {
             headers: new Headers({
             'Content-Type': 'application/json',
