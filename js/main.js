@@ -288,8 +288,15 @@ function filterPointsOfInterest(selectedTheme) {
 // Create a marker for a parking area
 var parkingIcon = L.icon({
   iconUrl: "icons/16_parking.png",
-  iconSize: getIconSize()
+  iconSize: [21, 22]
 });
+
+// Create a marker for generic area
+var genericIcon = L.icon({
+    iconUrl: "icons/11_information.png",
+    iconSize: [21, 22]
+  });
+
 
 // Function to get the icon size based on the zoom level
 function getIconSize() {
@@ -547,7 +554,8 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
       pointToLayer: function (feature, latlng) {
 
         //get the feature category to use its icon
-        var featureType = feature.properties.category;
+        var featureType = feature.properties.feattype;
+
         /*return L.circleMarker(latlng, {
             fillColor: '#5d0000',
             fillOpacity: 1,
@@ -582,9 +590,16 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
 }
 
 function getParkFeatureIcon(category) {
-  if (category == "parking") {
-    parkingIcon.options.iconSize = getIconSize();
+    /** CONSIDER CREATING AN ARRAY IN THE SYSTEM TO PROVIDE ICON DEFINITIONS FOR EACH TYPE
+     * OR ANOTEHR WAY TO PROGRAMATICALLY PROVIDE THE ICON SO FUTURE FEATURES DON'T REQUIRE CODE CHANGE.
+    */
+    if (category == "Parking Area") {
+      parkingIcon.options.iconSize = getIconSize();
     return parkingIcon;
+  } else {
+    // I DON'T KNOW WHY THE LINE BELOW ISN'T WORKING BUT IF ALL CATEGORIES DEFINED...
+    // genericIcon.option.iconSize = getIconSize();
+    return genericIcon;
   }
 };
 
