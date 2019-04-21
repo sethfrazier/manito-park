@@ -128,7 +128,7 @@ $(document).ready(function(){
             // Set Center to User location
             center = [position.coords.longitude, position.coords.latitude];
             // Load the map with the User's location
-            loadMap(center);
+            //loadMap(center);
         }, positionError);
     } else {
         // x.innerHTML = "Geolocation is not supported by this browser.";
@@ -282,7 +282,62 @@ function filterPointsOfInterest(selectedTheme) {
 // Create a marker for a parking area
 var parkingIcon = L.icon({
     iconUrl: "icons/16_parking.png",
-    iconSize: getIconSize()    
+    //iconSize: getIconSize()
+    iconSize: [22,22]
+});
+
+// Create a marker for water area
+var waterIcon = L.icon({
+    iconUrl: "icons/icons8-water-24.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for entrance area
+var entranceIcon = L.icon({
+    iconUrl: "icons/icons8-enter-24.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for garden area
+var gardenIcon = L.icon({
+    iconUrl: "icons/icons8-leaf-26.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for garden area
+var historicIcon = L.icon({
+    iconUrl: "icons/icons8-bungalow-24.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for rest room
+var restroomIcon = L.icon({
+    iconUrl: "icons/18_restroom.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for play area
+var playIcon = L.icon({
+    iconUrl: "icons/icons8-playground-24.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for natural area
+var naturalIcon = L.icon({
+    iconUrl: "icons/icons8-field-24.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for structures
+var structuresIcon = L.icon({
+    iconUrl: "icons/icons8-pavilion-30.png",
+    iconSize: [21, 22]
+});
+
+// Create a marker for generic area
+var genericIcon = L.icon({
+    iconUrl: "icons/11_information.png",
+    iconSize: [21, 22]
 });
 
 // Function to get the icon size based on the zoom level
@@ -541,7 +596,7 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
             pointToLayer: function (feature, latlng) {
                 
                 //get the feature category to use its icon
-                var featureType = feature.properties.category;
+                var featureType = feature.properties.feattype;
                 /*return L.circleMarker(latlng, {
                     fillColor: '#5d0000',
                     fillOpacity: 1,
@@ -575,10 +630,38 @@ function loadParkFeatures(sqlFilteredQueryFeat) {
 
 }
 
+//assign a 
 function getParkFeatureIcon(category){
-    if (category=="parking"){
+    if (category=="Parking Area"){
         parkingIcon.options.iconSize = getIconSize();
         return parkingIcon;
+    } else if (category == "Water Feature"){
+        waterIcon.options.iconSize = getIconSize();
+        return waterIcon;
+    } else if (category == "Entrance"){
+        entranceIcon.options.iconSize = getIconSize();
+        return entranceIcon;
+    } else if (category == "Garden") {
+        gardenIcon.options.iconSize = getIconSize();
+        return gardenIcon;
+    } else if (category == "Historic Area"){
+        historicIcon.options.iconSize=getIconSize();
+        return historicIcon;
+    } else if (category == "Rest Room"){
+        restroomIcon.options.iconSize = getIconSize();
+        return restroomIcon;
+    } else if (category == "Play Area"){
+        playIcon.options.iconSize = getIconSize();
+        return playIcon;               
+    } else if (category == "Natural Area"){
+        naturalIcon.options.iconSize = getIconSize();
+        return naturalIcon;
+    } else if (category == "Structure"){
+        structuresIcon.options.iconSize = getIconSize();
+        return structuresIcon;
+    }else {
+        
+        return genericIcon;
     }
 };
 
@@ -1015,7 +1098,7 @@ function setData(){
 }
 
 
-myMap.on(L.Draw.Event.CREATED, function (e) {
+/*myMap.on(L.Draw.Event.CREATED, function (e) {
     let layer = e.layer;
     myMap.addLayer(layer);
     let layerAdded = JSON.stringify(layer.toGeoJSON().geometry)
@@ -1040,7 +1123,7 @@ myMap.on(L.Draw.Event.CREATED, function (e) {
     
     refresh();
             
-        });
+        });*/
 
 //refreshLayer();
 
