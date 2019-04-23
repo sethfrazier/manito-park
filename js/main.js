@@ -547,7 +547,7 @@ function loadRoads() {
             // Create an initial style for each feature
             style: function (feature) {
                 return {
-                    color: '#9e559c', // set stroke color
+                    color: '#663300', // set stroke color
                     weight: 2.5, // set stroke weight
                     opacity: 1 // set stroke opacity
                 };
@@ -558,10 +558,10 @@ function loadRoads() {
                 // console.log(feature.properties)
                 
                 // Get the length from the GeoJSON and round it to 2 decimal places
-                var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
+                //var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
 
                 // Bind the name and length to a popup
-                layer.bindPopup(feature.properties.name + " (" + length + " mi)");                
+                layer.bindPopup(feature.properties.name);// + " (" + length + " mi)");                
 
             }
 
@@ -695,10 +695,10 @@ function loadTrails() {
                 // console.log(feature.properties)
                 
                 // Get the length from the GeoJSON and round it to 2 decimal places
-                var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
+                //var length = parseFloat(feature.properties.route_leng).toFixed(2).toLocaleString();
 
                 // Bind the name and length to a popup
-                layer.bindPopup(feature.properties.name + " (" + length + " mi)");                
+                layer.bindPopup(feature.properties.name);// + " (" + length + " mi)");                
 
             }
 

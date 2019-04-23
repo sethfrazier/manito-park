@@ -31,12 +31,40 @@ p {
     font-size: 1.1em;
 }
 
+/**********************************************************************/
+
+/* CSS FOR THE UI CONTROLS */
+
+#ui-controls {
+    padding-top: 0px;
+}
+
+#ui-controls #fieldLabel {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+#ui-controls input {
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+#ui-controls input[type="button"],
+input[type="submit"] {
+    font-size: 1.1em;
+    margin-right: 5px;
+}
+
+
+/**********************************************************************/
+
 /* CSS FOR THE LEAFLET SIDEBAR */
 
 /* Add CSS for sidebar height */
 @media (min-width: 768px) {
     .leaflet-sidebar.leaflet-touch {
-        height: 75%;
+        height: 65%;
     }
 }
 
@@ -45,7 +73,7 @@ p {
 }
 
 .leaflet-sidebar-header {
-    background-color: #426230;
+    background-color: #663300;
 }
 
 .leaflet-sidebar-tabs {
@@ -55,5 +83,62 @@ p {
 .leaflet-sidebar-tabs > li.active,
 .leaflet-sidebar-tabs > ul > li.active {
     color: #fff;
-    background-color: #426230;
+    background-color: #663300;
+}
+
+/**********************************************************************/
+
+/* CSS FOR THE LEGEND */
+
+#legendItem {
+    line-height: 1.4em;
+    padding-top: 5px;
+}
+
+#ui-controls .legendText {
+    font-size: 1.1em;
+    vertical-align: middle;
+    padding-left: 2px;
+}
+
+
+/**********************************************************************/
+
+/* CSS FOR THE POPUPS */
+
+.custom-popup .leaflet-popup-content-wrapper {
+    color: white;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    width: 350px;
+    max-height: 300px;
+    overflow-x: auto;
+    overflow-y: none;
+}
+
+
+.custom-popup .leaflet-popup-content-wrapper::-webkit-scrollbar {
+    width: 5px;
+    opacity: .75;
+}
+
+
+.custom-popup .leaflet-popup-content-wrapper::-webkit-scrollbar-track {
+    background: #ddd;
+    opacity: .75;
+}
+
+
+.custom-popup .leaflet-popup-content-wrapper::-webkit-scrollbar-thumb {
+    background: #666;
+    opacity: .75;
+    border-radius: 3px;
+}
+
+
+.custom-popup .leaflet-popup-content {
+    margin: 1em;
+    width: 400px;
 }
