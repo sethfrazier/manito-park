@@ -1053,6 +1053,7 @@ function cancelData() {
     $('#ui-controls #longitude').val('');
     $('#urgencyDropdown').val('default').attr('selected');
     $('#issueDropdown').val('default').attr('selected');
+    $('#commentEntry').val('');
     
     // Disable the Submit button
     $('#submitButton').attr("disabled", true);
@@ -1092,7 +1093,8 @@ function setData(){
                 console.log(err)
             })
     
-    refresh();
+    //refresh();
+    setTimeout(function(){ loadUserInput(); }, 250);
     cancelData();
             
 }
@@ -1137,6 +1139,8 @@ function refresh() {
     
     // Reload the wildlife observations layer with the new point
     loadUserInput();
+    
+    
     
     // If the screen width is less than or equal to 850 pixels
     //if (screen.width <= 850) {

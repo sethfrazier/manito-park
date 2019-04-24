@@ -64,7 +64,7 @@ input[type="submit"] {
 /* Add CSS for sidebar height */
 @media (min-width: 768px) {
     .leaflet-sidebar.leaflet-touch {
-        height: 65%;
+        height: 45%;
     }
 }
 
