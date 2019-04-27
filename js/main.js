@@ -1094,7 +1094,7 @@ function setData(){
             })
     
     //refresh();
-    setTimeout(function(){ loadUserInput(); }, 250);
+    setTimeout(function(){ loadUserInput(); }, 1000);
     cancelData();
             
 }
